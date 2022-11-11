@@ -1,0 +1,27 @@
+.uii
+{
+    color: #43b791;
+}
+
+.helpme
+{
+    color: red;
+    font-size: 40;
+    transition: 0.5s;
+
+}
+
+
+.helpme:hover
+{
+    color: #0004ff;
+    font-size: 50;
+    transition: 0.5s;
+
+}
+
+
+#map
+{
+    height: 180px;
+}
