@@ -1,8 +1,7 @@
 #Folders
 .idea
-
+.vscode
 
 #Files
 .htaccess
-
-#Ajouter les fichiers correspondant VSCode si besoin
+/config
