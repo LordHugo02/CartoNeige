@@ -1,0 +1,13 @@
+{
+  "name": "bootstrap",
+  "repo": "components/bootstrap",
+  "version": "5.2.2",
+  "description": "The Bootstrap CSS framework",
+  "styles": [
+    "css/bootstrap.min.css"
+  ],
+  "files": [
+    "css/bootstrap.min.css",
+    "js/bootstrap.min.js"
+  ]
+}
