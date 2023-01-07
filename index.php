@@ -1,10 +1,9 @@
+
 <?php
-    
-    
     require __DIR__ . '/config/config.php';
     
     session_start();
-    
+    $logs_rep = "";
     ini_set('display_errors', 1); // Pour afficher les erreurs
     ini_set('error_log', $logs_rep . 'error.log'); // Pour enregistrer les erreurs dans un fichier
     error_reporting(E_ALL); // Pour gérer toutes les erreurs
@@ -31,5 +30,5 @@
      * @var array $_url_tab
      */
     $_url_tab = explode('/', $url);
-    
     require __DIR__ . '/router.php';
+

@@ -1,6 +1,5 @@
 <?php
 
-    
     //import js fontawesome
     
     echo '<script type="text/javascript" src="' . $pub_url . 'config/config.js"></script>';
