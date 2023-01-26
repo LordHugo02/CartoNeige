@@ -8,4 +8,5 @@
     <div id="credit">
         <p id="noms">Développé par FLINOIS Hugo et DIJOUX Quentin</p>
     </div>
+
 </header>
