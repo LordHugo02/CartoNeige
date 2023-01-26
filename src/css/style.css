@@ -43,19 +43,35 @@ body {
     height: 180px;
 }
 
+#titre
+{
+    border-right: 2px grey solid;
+    text-align: center;
+}
+
+#centre
+{
+    display: flex;
+    justify-content: space-between;
+}
+
 #title
 {
     color: #ffffff;
     font-family: Helvetica, serif;
     font-style : italic;
     padding: 10px;
-    border-right: 2px grey solid;
+
 }
 
+#credit {
+    border-left: 2px grey solid;
+    text-align: center;
+}
 #noms {
     color: white;
     font-size: 18px;
-    border-left: 2px grey solid;
+
     padding: 10px;
     text-align : center;
 }

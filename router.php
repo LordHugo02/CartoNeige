@@ -2,6 +2,7 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="src/css/style.css"/>
+
 </head>
 <body>
 <?php
