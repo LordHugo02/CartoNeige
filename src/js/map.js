@@ -61,9 +61,9 @@ var neige = L.tileLayer(
         opacity : 1,
         maxNativeZoom:10,
         attribution : "IGN-F/Geoportail",
-        //tileSize : 256 // les tuiles du Géooportail font 256x256px
+        //tileSize : 256 // les tuiles du Géoportail font 256x256px
     }
-);
+).addTo(map);
 
 var pentes = L.tileLayer.wms(
     "https://wxs.ign.fr/altimetrie/geoportail/r/wms?",
@@ -139,7 +139,7 @@ var stations = L.tileLayer(`https://api.maptiler.com/maps/winter/{z}/{x}/{y}.png
     minZoom: 1,
     attribution: "\u003ca href=\"https://www.maptiler.com/copyright/\" target=\"_blank\"\u003e\u0026copy; MapTiler\u003c/a\u003e \u003ca href=\"https://www.openstreetmap.org/copyright\" target=\"_blank\"\u003e\u0026copy; OpenStreetMap contributors\u003c/a\u003e",
     crossOrigin: true
-});
+}).addTo(map);
 
 var topo   = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {}),
     osm  = L.tileLayer('http://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png', {}),
