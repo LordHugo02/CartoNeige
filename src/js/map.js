@@ -18,7 +18,7 @@ L.control.scale().addTo(map);
 
 //précipitation neige
 
-// L.tileLayer(`https://api.maptiler.com/maps/winter/{z}/{x}/{y}.png?key=${mapTilerKey}`,{ //style URL
+// L.tileLayer(`https://api.maptiler.com/maps/winter/{z}/{x}/{y}.png?key=${key}`,{ //style URL
 //     tileSize: 512,
 //     zoomOffset: -1,
 //     minZoom: 1,
@@ -170,7 +170,7 @@ var overlays = {
     "Pentes": pentes,
     "Stations Verte": stationVerte,
     "Villages étape": villagesEtape,
-
+    "Villages étape": villagesEtape,
 };
 
 // Ajout du controleur pour modifier les layers
