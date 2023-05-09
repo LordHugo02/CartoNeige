@@ -10,10 +10,19 @@ body {
     background-color: #2c3034;
 }
 
+#title {
+    margin-right: 10px;
+}
+
+#div-text {
+    width: 600px;
+    border-right: 2px grey solid;
+}
 #texte
 {
     color: #d57c18;
-    font-size: 18px;
+    font-size: 20px;
+    margin-top : 30px;
 }
 
 .helpme
@@ -47,12 +56,16 @@ body {
 {
     border-right: 2px grey solid;
     text-align: center;
+    padding : 5px;
+    margin : 5px
 }
 
 #centre
 {
     display: flex;
+    flex-direction: row;
     justify-content: space-between;
+    padding : 5px
 }
 
 #title
@@ -60,22 +73,40 @@ body {
     color: #ffffff;
     font-family: Helvetica, serif;
     font-style : italic;
-    padding: 10px;
 
 }
 
 #credit {
-    border-left: 2px grey solid;
     text-align: center;
+    padding: 5px;
 }
 #noms {
+    margin-top: 30px;
     color: white;
     font-size: 18px;
-
-    padding: 10px;
     text-align : center;
 }
 
+#liens  {
+    text-align: center;
+    border-right: 2px grey solid;
+    padding: 30px;
+}
+
+#liens a{
+    margin-top: 30px;
+}
+
+.lien {
+    font-size: 18px;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+}
+
+.lien:hover {
+    color: orange;
+}
 
 
 
