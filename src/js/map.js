@@ -170,7 +170,7 @@ var overlays = {
     "Pentes": pentes,
     "Stations Verte": stationVerte,
     "Villages étape": villagesEtape,
-
+    "Villages étape": villagesEtape,
 };
 
 // Ajout du controleur pour modifier les layers
