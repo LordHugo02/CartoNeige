@@ -4,6 +4,7 @@ header
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    height: 100px;
 }
 
 body {
@@ -91,6 +92,7 @@ body {
     text-align: center;
     border-right: 2px grey solid;
     padding: 30px;
+    border-left: 2px grey solid;
 }
 
 #liens a{

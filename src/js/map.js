@@ -130,6 +130,17 @@ var velos = L.tileLayer.wms(
     }
 );
 
+var temperatures = L.tileLayer.wms(
+    "https://magosm.magellium.com/geoserver/ows?",
+    {
+        layers: 'magosm:france_bicycle_mtb_routes_line',
+        transparent: 'true',
+        format: 'image/png',
+        maxZoom: 21,
+        opacity: 1
+    }
+);
+
 
 
 //Base de maps
@@ -170,16 +181,29 @@ var overlays = {
     "Pentes": pentes,
     "Stations Verte": stationVerte,
     "Villages étape": villagesEtape,
-    "Villages étape": villagesEtape,
+    "Température": temperatures,
 };
 
 // Ajout du controleur pour modifier les layers
 L.control.layers(baseLayers, overlays).addTo(map);
 
+// Evenement lors de la modification du curseur
+slider.addEventListener('input', function () {
+    sliderValue.textContent = Math.trunc((slider.value * 100)) + '%';
+    neige.setOpacity(slider.value);
+    pentes.setOpacity(slider.value);
+}, false);
+
+// Mise à jour du label opacité
+function updateOpacity(value){
+    sliderValue.textContent = Math.trunc((value * 100)) + '%';
+    neige.setOpacity(value);
+    pentes.setOpacity(value);
+}
 
 
 // Ajout du control "fichier" sur la map
-L.Control.FileLayerLoad.LABEL = '<a title="Charger un fichier GPX, KML ou GeoJSON"><img class="icon" src="folder.svg" alt="file icon"/></a>';
+/*L.Control.FileLayerLoad.LABEL = '<a title="Charger un fichier GPX, KML ou GeoJSON"><img class="icon" src="folder.svg" alt="file icon"/></a>';
 control = L.Control.fileLayerLoad({
     fileSizeLimit: 10000,
     fitBounds: true,
@@ -207,7 +231,7 @@ const searchControl = L.esri.Geocoding.geosearch({title:"Rechercher sur la carte
 // Action lors d'une recherche de ville effectuée
 searchControl.on("results", function (data) {
     console.log("data", data);
-});
+});*/
 
 
 
