@@ -201,9 +201,17 @@ function updateOpacity(value){
     pentes.setOpacity(value);
 }
 
+// Variable Javascript de style pour l'élément qui permet l'ajout de fichier
+var style = {
+    color: 'red',
+    opacity: 1.0,
+    fillOpacity: 1.0,
+    weight: 2,
+    clickable: false
+};
 
 // Ajout du control "fichier" sur la map
-/*L.Control.FileLayerLoad.LABEL = '<a title="Charger un fichier GPX, KML ou GeoJSON"><img class="icon" src="folder.svg" alt="file icon"/></a>';
+L.Control.FileLayerLoad.LABEL = '<a title="Charger un fichier GPX, KML ou GeoJSON"><img class="icon" src="folder.svg" alt="file icon"/></a>';
 control = L.Control.fileLayerLoad({
     fileSizeLimit: 10000,
     fitBounds: true,
@@ -220,6 +228,22 @@ control = L.Control.fileLayerLoad({
 
 control.addTo(map);
 
+control.loader.on('data:loading', function (e) {
+    alert("Loading ...");
+    $("#loadingContainer").show();
+});
+
+// Gestion des evenements après l'upload d'un fichier
+control.loader.on('data:loaded', function (e) {
+    alert("Loaded !");
+    var layer = e.layer;
+    console.log(layer);
+});
+control.loader.on('data:error', function (error) {
+    alert("Error : check log");
+    console.error(error);
+});
+
 
 
 
@@ -231,7 +255,7 @@ const searchControl = L.esri.Geocoding.geosearch({title:"Rechercher sur la carte
 // Action lors d'une recherche de ville effectuée
 searchControl.on("results", function (data) {
     console.log("data", data);
-});*/
+});
 
 
 
@@ -241,7 +265,3 @@ searchControl.on("results", function (data) {
 // https://github.com/buche/leaflet-openweathermap/blob/master/example/files/map.js
 
 // https://www.meteociel.fr/modeles/arome.php
-
-
-
-
