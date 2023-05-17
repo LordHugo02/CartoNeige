@@ -1,5 +1,4 @@
 var map = L.map('map').setView([43.6, 1.44], 7);
-
 // Ajout de l'echelle sur la map
 L.control.scale().addTo(map);
 
@@ -84,9 +83,9 @@ var stationVerte = L.tileLayer.wms(
         format: 'image/png',
         maxZoom : 21,
         opacity : 1,
-    }
+    });
 
-);var villagesEtape = L.tileLayer.wms(
+var villagesEtape = L.tileLayer.wms(
     "https://wxs.ign.fr/cartovecto/geoportail/v/wms?",
     {
         layers: 'VILLAGESETAPE',
@@ -130,18 +129,12 @@ var velos = L.tileLayer.wms(
     }
 );
 
-var temperatures = L.tileLayer.wms(
-    "https://magosm.magellium.com/geoserver/ows?",
-    {
-        layers: 'magosm:france_bicycle_mtb_routes_line',
-        transparent: 'true',
-        format: 'image/png',
-        maxZoom: 21,
-        opacity: 1
-    }
-);
-
-
+//Intempéries
+var nuages = L.tileLayer(`https://tile.openweathermap.org/map/clouds_new/{z}/{x}/{y}.png?appid=${openWeatherKey}`,{});
+var precipitation = L.tileLayer(`https://tile.openweathermap.org/map/precipitation_new/{z}/{x}/{y}.png?appid=${openWeatherKey}`,{});
+var temperatures = L.tileLayer(`https://tile.openweathermap.org/map/temp_new/{z}/{x}/{y}.png?appid=${openWeatherKey}`,{});
+var vent = L.tileLayer(`https://tile.openweathermap.org/map/wind_new/{z}/{x}/{y}.png?appid=${openWeatherKey}`,{});
+var pression = L.tileLayer(`https://tile.openweathermap.org/map/pressure_new/{z}/{x}/{y}.png?appid=${openWeatherKey}`,{});
 
 //Base de maps
 var stations = L.tileLayer(`https://api.maptiler.com/maps/winter/{z}/{x}/{y}.png?key=${mapTilerKey}`,{ //style URL
@@ -152,13 +145,10 @@ var stations = L.tileLayer(`https://api.maptiler.com/maps/winter/{z}/{x}/{y}.png
     crossOrigin: true
 });
 
-var topo   = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {}),
+var topo = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {}),
     osm  = L.tileLayer('http://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png', {}),
     base = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {}),
     esri = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}', {});
-
-
-
 
 
 // Ajout des différentes couches au menu du choix du fond de carte sur la map
@@ -170,8 +160,6 @@ var baseLayers = {
     "Esri": esri
 };
 
-
-
 // Ajout de la couche de neige pour pouvoir l'enlever si besoin
 var overlays = {
     "Neige": neige,
@@ -181,7 +169,11 @@ var overlays = {
     "Pentes": pentes,
     "Stations Verte": stationVerte,
     "Villages étape": villagesEtape,
-    "Température": temperatures,
+    "Nuages": nuages,
+    "Precipitation": precipitation,
+    "Vent": vent,
+    "Temperatures": temperatures,
+    "Pression": pression,
 };
 
 // Ajout du controleur pour modifier les layers
@@ -192,6 +184,7 @@ slider.addEventListener('input', function () {
     sliderValue.textContent = Math.trunc((slider.value * 100)) + '%';
     neige.setOpacity(slider.value);
     pentes.setOpacity(slider.value);
+    pentes.setOpacity(slider.value);
 }, false);
 
 // Mise à jour du label opacité
@@ -201,7 +194,38 @@ function updateOpacity(value){
     pentes.setOpacity(value);
 }
 
+function transposeProjection(x, y, src, dest) {
+    const p = new proj4.toPoint([x, y]);
+    return proj4.transform(src, dest, p);
+}
+
+function ctoc(){
+
+    fetch("https://api.camptocamp.org/outings").then(function(res) {
+        if (res.ok) {
+            return res.json();
+        }
+    }).then(function(value) {
+        value.documents.forEach(function (element) {
+            let tabGeo = JSON.parse(element.geometry.geom);
+
+            let x = tabGeo.coordinates[0];
+            let y = tabGeo.coordinates[1];
+
+            const geodesicProj = new proj4.Proj("WGS84");
+            const mercatorProj = new proj4.Proj("EPSG:3857");
+
+            let geo = transposeProjection(x, y, mercatorProj, geodesicProj);
+
+            L.marker(geo.x, geo.y).addTo(map);
+        })
+    }).catch(function(err) {
+    });
+}
+ctoc()
+
 // Variable Javascript de style pour l'élément qui permet l'ajout de fichier
+
 var style = {
     color: 'red',
     opacity: 1.0,
@@ -210,56 +234,14 @@ var style = {
     clickable: false
 };
 
-// Ajout du control "fichier" sur la map
-L.Control.FileLayerLoad.LABEL = '<a title="Charger un fichier GPX, KML ou GeoJSON"><img class="icon" src="folder.svg" alt="file icon"/></a>';
-control = L.Control.fileLayerLoad({
-    fileSizeLimit: 10000,
-    fitBounds: true,
-    layerOptions: {
-        style: style,
-        pointToLayer: function (data, latlng) {
-            return L.circleMarker(
-                latlng,
-                { style: style }
-            );
-        }
-    }
-});
-
-control.addTo(map);
-
-control.loader.on('data:loading', function (e) {
-    alert("Loading ...");
-    $("#loadingContainer").show();
-});
-
-// Gestion des evenements après l'upload d'un fichier
-control.loader.on('data:loaded', function (e) {
-    alert("Loaded !");
-    var layer = e.layer;
-    console.log(layer);
-});
-control.loader.on('data:error', function (error) {
-    alert("Error : check log");
-    console.error(error);
-});
-
-
-
-
-
-
+/*
 // Ajout du contrôle de recherche de ville
 const searchControl = L.esri.Geocoding.geosearch({title:"Rechercher sur la carte", placeholder:"Ville, rue ou lieu qui se trouve sur la carte."}).addTo(map);
-
 // Action lors d'une recherche de ville effectuée
 searchControl.on("results", function (data) {
     console.log("data", data);
 });
-
-
-
-
+*/
 //infos
 
 // https://github.com/buche/leaflet-openweathermap/blob/master/example/files/map.js

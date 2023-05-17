@@ -1,8 +1,14 @@
 <html>
 <head>
+    <title>Cartoneige</title>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="src/css/style.css"/>
-
+	<!-- Load import file -->
+	<script src="https://unpkg.com/togeojson@0.16.0"></script>
+	<script src="https://unpkg.com/leaflet-filelayer@1.2.0"></script>
+	<link rel="stylesheet" href="./esri-leaflet-geocoder.css">
+	<!-- Barre de recherche -->
+    <script src="./esri-leaflet-geocoder.js"></script>
 </head>
 <body>
 <?php
@@ -16,62 +22,50 @@ switch ($_url_tab[0]) {
         require $controller_rep . 'cartoneige.php';
         break;
 }
-
 require $controller_rep . 'footer.php';
 ?>
 <script>
-$.get("http://maps.theia-land.fr/neige.json", function(data){
-    $('#dateValueMenu').text("Carte mise à jour le "+data["dateNeige"]);
-    $('#dateValueMenu').css("font-weight","Bold");
-    $('#dateValue').text(data["dateNeige"]);
-});
-
-function openModal(){
-    $('#modalInfo').modal('show');
-}
-
-	// Variable Javascript de style pour l'élément qui permet l'ajout de fichier
-			var style = {
-				color: 'red',
-				opacity: 1.0,
-				fillOpacity: 1.0,
-				weight: 2,
-				clickable: false
-			};
-
 // Ajout du control "fichier" sur la map
-			L.Control.FileLayerLoad.LABEL = '<a title="Charger un fichier GPX, KML ou GeoJSON"><img class="icon" src="folder.svg" alt="file icon"/></a>';
-			control = L.Control.fileLayerLoad({
-				fileSizeLimit: 10000,
-				fitBounds: true,
-				layerOptions: {
-					style: style,
-					pointToLayer: function (data, latlng) {
-						return L.circleMarker(
-							latlng,
-							{ style: style }
-						);
-					}
-				}
-			});
+L.Control.fileLayerLoad({
+    // Allows you to use a customized version of L.geoJson.
+    // For example if you are using the Proj4Leaflet leaflet plugin,
+    // you can pass L.Proj.geoJson and load the files into the
+    // L.Proj.GeoJson instead of the L.geoJson.
+    layer: L.geoJson,
+    // See http://leafletjs.com/reference.html#geojson-options
+    layerOptions: {style: {color:'red'}},
+    // Add to map after loading (default: true) ?
+    addToMap: true,
 
-			control.addTo(map);
+    // File size limit in kb (default: 1024) ?
+    fileSizeLimit: 100000,
+    // Restrict accepted file formats (default: .geojson, .json, .kml, and .gpx) ?
+    formats: [
+        '.geojson',
+        '.kml',
+        '.json'
+    ]
+}).addTo(map);
 
-			control.loader.on('data:loading', function (e) {
+var control = L.Control.fileLayerLoad();
+control.loader.on('data:loading', function (e) {
 				alert("Loading ...");
 				$("#loadingContainer").show();
-			});
+});
 
-			// Gestion des evenements après l'upload d'un fichier
-			control.loader.on('data:loaded', function (e) {
-				alert("Loaded !");
-				var layer = e.layer;
-				console.log(layer);
-			});
-			control.loader.on('data:error', function (error) {
-				alert("Error : check log");
-				console.error(error);
-			});
+var control = L.Control.fileLayerLoad();
+control.loader.on('data:loaded', function (event) {
+    // event.layer gives you access to the layers you just uploaded!
+
+    // Add to map layer switcher
+    layerswitcher.addOverlay(event.layer, event.filename);
+});
+
+var control = L.Control.fileLayerLoad();
+control.loader.on('data:error', function (error) {
+    // Do something usefull with the error!
+    console,error(error);
+});
 </script>
 </body>
 </html>
