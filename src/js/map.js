@@ -184,7 +184,6 @@ slider.addEventListener('input', function () {
     sliderValue.textContent = Math.trunc((slider.value * 100)) + '%';
     neige.setOpacity(slider.value);
     pentes.setOpacity(slider.value);
-    pentes.setOpacity(slider.value);
 }, false);
 
 // Mise à jour du label opacité
